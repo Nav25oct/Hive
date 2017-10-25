@@ -1,0 +1,74 @@
+Create Sample databases
+
+CREATE DATABASE IF NOT EXIST CARDS;
+
+### CREATE MANGED TABLE 
+
+CREATE TABLE deck_of_cards (
+color string,
+SUIT string,
+PIP string) ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE;
+
+## cHECK TABLE DESCRIPTION
+
+hive> DESC DECK_OF_CARDS;
+OK
+color                   string
+suit                    string
+pip                     string
+Time taken: 0.153 seconds, Fetched: 3 row(s)
+
+hive> DESC DECK_OF_CARDS;
+OK
+color                   string
+suit                    string
+pip                     string
+Time taken: 0.153 seconds, Fetched: 3 row(s)
+
+hive> DESC FORMATTED DECK_OF_CARDS;
+OK
+# col_name              data_type               comment
+
+color                   string
+suit                    string
+pip                     string
+
+# Detailed Table Information
+Database:               cards
+Owner:                  BDD
+CreateTime:             Tue Oct 24 23:06:29 EDT 2017
+LastAccessTime:         UNKNOWN
+Protect Mode:           None
+Retention:              0
+Location:               hdfs://datclddb201.dibos02.di-cloud.com:8020/user/hive/warehouse/cards.db/deck_of_cards
+Table Type:             MANAGED_TABLE
+Table Parameters:
+        transient_lastDdlTime   1508900789
+
+# Storage Information
+SerDe Library:          org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe
+InputFormat:            org.apache.hadoop.mapred.TextInputFormat
+OutputFormat:           org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+Compressed:             No
+Num Buckets:            -1
+Bucket Columns:         []
+Sort Columns:           []
+Storage Desc Params:
+        field.delim             |
+        serialization.format    |
+Time taken: 0.072 seconds, Fetched: 29 row(s)
+
+
+#### LOAD DATA INTO HIVE TABLE 
+
+LOAD DATA LOCAL INPATH '/home/BDD/deckofcards.txt' INTO TABLE deck_of_cards;
+
+#### CREATE EXTERNAL TABLE
+
+CREATE EXTERNAL TABLE DECK_OF_CARDS  (
+color string,
+SUIT string,
+PIP string) ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE
+LOCATION '/user/hive/warehouse/cards.db/deck_of_cards';
