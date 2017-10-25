@@ -72,3 +72,65 @@ SUIT string,
 PIP string) ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
 STORED AS TEXTFILE
 LOCATION '/user/hive/warehouse/cards.db/deck_of_cards';
+
+
+============ Create ODS Database ==========
+
+Create external table categories (
+category_id int,
+category_department_id int,
+category_name string
+) ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE; 
+
+create external table customers ( customer_id int,
+customer_fname string,
+customer_lname string,
+customer_email string,
+customer_password string,
+customer_street  string,
+customer_city string,
+customer_state string,
+customer_zipcode string )
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE; 
+
+### As Order table is going to big hence we are creating Partation on table
+
+create external table orders ( order_id int,
+	order_date string,
+	order_customer_id string,
+	order_status string )
+	PARTITIONED BY ( order_month string)
+	ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+	STORED AS TEXTFILE; 
+        
+### added additional coloumn in order_items table called order_item_order_date as Orders and Order_item are closly coupled table; if we ## partationed  with same column it will improve the performance.  
+
+CREATE EXTERNAL TABLE order_items ( 
+order_item_id int,
+order_item_order_id int,
+order_item_order_date string,
+order_item_product_id int,
+order_item_quantity int,
+order_item_subtotal float,
+order_item_product_price float 
+) PARTITIONED BY ( order_month string)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE;
+
+
+create external table products (
+product_id int,
+product_category_id int,
+product_name string,
+product_description string,
+product_price float,
+product_image string )
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE; 
+
+
+*************** Creating EDW database ****************8
+
+## By using Dimensional Modeling 
