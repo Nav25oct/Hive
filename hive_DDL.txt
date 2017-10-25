@@ -134,3 +134,29 @@ STORED AS TEXTFILE;
 *************** Creating EDW database ****************8
 
 ## By using Dimensional Modeling 
+
+create database retail_edw;
+
+
+CREATE EXTERNAL TABLE products_dimension (
+product_id int,
+product_name string,
+product_description string,
+product_price float,
+product_category_name string,
+product_department_name string) 
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE;
+
+
+CREATE EXTERNAL TABLE order_facts( 
+order_item_order_id int,
+order_item_order_date string,
+order_item_product_id int,
+order_item_quantity smallint,
+order_item_subtotal float,
+order_item_product_price float)
+PARTITIONED BY ( Product_category_department string)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE;
+
